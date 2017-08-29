@@ -137,144 +137,6 @@
 	</div>
 </div>
 
-{if isset(isLoaded) }
-	{if isset(isRepaired)}
-		{if isset(isValidated)}
-			<div>
-				<div class="headerpane">
-					<h1>
-					<div class="record-cell">
-						<span class="module-title">{$title}</span>
-					</div>
-					<div class="btn-toolbar pull-right">
-						<span sfuuid="900" class="edit">
-						<a class="btn btn-primary" href="javascript:void(0);" name="cancel_button" id="cancel_button">
-							{$MOD.LBL_CANCEL_BUTTON_LABEL}
-						</a>
-						<a class="btn btn-primary" href="javascript:void(0);" name="save_button" id="save_button">
-							{$MOD.LBL_SAVE_BUTTON_LABEL}
-						</a>
-						</span>
-					</div>
-					</h1>
-				</div>
-				<div class="record">
-				{if isAdmin}
-				<div class="row-fluid panel_body">
-					<div class="span4 record-cell" data-type="" data-name="">
-						<span class="normal index" data-fieldname="" data-index="">
-							<span sfuuid="901" class="edit">
-								<span class="btn" id="enable_all_users"> Enable All</span>
-							</span>
-						</span>
-					</div>
-					<div class="span4 record-cell" data-type="" data-name="">
-						<span class="normal index" data-fieldname="" data-index="">
-							<span sfuuid="902" class="edit">
-								<input type="hidden" name="license_key" id="license_key" value="{$license_key}" maxlength="100" class="inherit-width" />
-							</span>
-						</span>
-					</div>
-				</div>
-				<div class="row-fluid panel_body">
-				<div class="span6 record-cell" data-type="text" data-name="configureUsers">
-				<table class="configureUsers"> 
-				
-				<tr>
-				<th class="do-not-drag-drop">Sugar User(s)</th>
-				<th class="do-not-drag-drop">Enabled Sugar Support Agents</th>
-				</tr>
-				<tr>
-				<td>
-				<ul id="disabled" class="connectedSortable">
-					{$userObject}
-					{foreach $usersObject->disabled as $something}
-					<li id="{$id}" class="ui-state-default">{$text}</li>
-
-					{/foreach}
-				</ul>
-				</td>
-				<td>
-				<ul id="enabled" class="connectedSortable">
-					{each usersObject.enabled}
-					<li id="{$id}" class="ui-state-default">{$text}</li>
-					{/each}
-				</ul>
-				</td>
-				</tr>
-				</table> 
-				</div>
-				<div class="span4 record-cell" data-type="text" data-name="users_info">
-						<span class="normal index" data-fieldname="users_info" data-index="">
-							<span sfuuid="903" class="detail custom_width">
-								<span sfuuid="904" class="detail" >
-								{$MOD.LBL_ALL_USERS}
-								</span>
-								<span sfuuid="905" class="pull-right detail bold_users" id='active_users'>
-								{$active_users}
-								</span>
-							</span>
-							
-							<span sfuuid="906" class="detail custom_width">
-								<span sfuuid="907" class="detail" >
-								{$MOD.LBL_CXM_ENABLED_USERS}
-								</span>
-								<span sfuuid="908" class="pull-right detail bold_users" id='enabled_active_users'>
-								{$enabled_active_users}
-								</span>
-							</span>
-							
-							<span sfuuid="909" class="detail custom_width">
-								<span sfuuid="910" class="detail" >
-								{$MOD.LBL_LICENSED_USERS}
-								</span>
-								<span sfuuid="911" class="pull-right detail bold_users" id='licensed_user_count'>
-								{$licensed_user_count}
-								</span>
-							</span>
-							<span class="span4 normal index" data-name="boost_user_count" style="display: none;padding-top: 10px;">
-							<span sfuuid="912" class="edit" >
-							<input type="text" name="boost_user_count" id="boost_user_count"  value="{$enabled_active_users}" maxlength="100" class="boost" placeholder="Enter User count">
-							<a class="btn btn-primary" href="javascript:void(0);" name="boost_button" id="boost_button">
-								{$MOD.LBL_BOOST_LABEL}
-							</a>
-							</span>
-							</span>
-						</span>
-						
-				</div>	
-				</div>
-				{else}
-				<div class='headerpane'>
-		<h1>
-		<p class="record-cell">
-		Do <a href='index.php?module=rt_Tracker&action=license' target='_blank'><span class='alert-danger' >Validate License Key</span></a>
-		</p>
-		</h1>
-		</div>	
-				{/if}
-				</div>
-			</div>
-			{else}
-			<div class='headerpane'>
-			<h1>
-			<p class="record-cell">
-			Do <a href='index.php?module=rt_Tracker&action=license' target='_blank'><span class='alert-danger' >Validate </span></a>first
-			</p>
-			</h1>
-			</div>
-		{/if}
-	{else}
-		<div class='headerpane'>
-		<h1>
-		<p class="record-cell">
-		Do <a href='index.php?module=Administration&action=Upgrade' target='_blank'><span class='alert-danger' >Quick Repair and Rebuild </span></a>first and then refresh this page manually
-		</p>
-		</h1>
-		</div>	
-	{/if}
-	
-{/if}
 {literal}
 <script type="text/javascript">
 var licenseKey = '';
@@ -294,7 +156,7 @@ var title,
     select2Onchange = true,
     userConfig = false,
 
-    className: 'customMainPane',
+    className = 'customMainPane',
     license_key,
     update = false, //true if previously license is saved
     continueURL,
@@ -309,6 +171,7 @@ function validation_processing() {
         var rt_Tracker_key = '6822a0f4daea20bb3d8b9e7f86d8ad25';
         var user_key = $("#license_key").val().trim();
         licenseKey = user_key;
+        console.log(user_key);
         $.ajax('https://www.sugaroutfitters.com/api/v1/key/validate', {
             type: 'GET',
             dataType: 'jsonp',
@@ -326,7 +189,7 @@ function validation_processing() {
             $("#validation_msg").text("Validation: Successful").show().fadeOut(3000);
             $("#validate_button").addClass('hide');
             $("#license_validator").val(true);
-            validateLicenseSuccess(response);
+            validateLicenseSuccess(response,user_key);
         }).error(function() {
             $("#validation_msg").text("Validation: Un-Successful").show().fadeOut(3000);
             $("#license_validator").val(false);
@@ -334,7 +197,7 @@ function validation_processing() {
     }
 }
 
-function validateLicenseSuccess(response) {
+function validateLicenseSuccess(response,user_key) {
 
     var msg = {};
     if (response) {
@@ -386,8 +249,9 @@ function validateLicenseSuccess(response) {
 			//'success':window.alert("about to go to that action"),
 			'failure':null
 		},
-		'module=rt_Tracker&action=saveLicense&license_key='+license_key+'&sugar_body_only=false'
+		'module=rt_Tracker&action=saveLicense&license_key='+user_key+'&sugar_body_only=false'
 		);
+	console.log('module=rt_Tracker&action=saveLicense&license_key='+user_key+'&sugar_body_only=false')
 }
 </script>
 {/literal}
